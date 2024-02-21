@@ -1,5 +1,5 @@
 clear
-import excel "C:\Users\charl\Dropbox\Solve Platform Bulk Download\Solutions\2023_full.xlsx", sheet("Sheet1") firstrow
+import excel "C:\Users\charl\Dropbox\Solve Platform Bulk Download\Solutions\2023_full_withsim.xlsx", sheet("Sheet1") firstrow
 gen sf= SolutionStatus!="Published"
 
 encode ChallengeName , gen(challenge_id)
@@ -8,7 +8,7 @@ encode Whichofthefollowingcategorie , gen(typetech)
 gen course_mit= ( DidyoutaketheMITxcourseBu!="No, I didn’t take the course")
 gen previous_netw= ( Isyoursolutionanactiveorpa !="No, Solve is the first network joined")
 gen us_founder= ( IstheTeamLeadaresidentoft =="Yes")
-replace male_founder= ( WhatistheTeamLeadsgender =="Man")
+gen male_founder= ( WhatistheTeamLeadsgender =="Man")
 reg sf typetech course_mit previous_netw male_founder us_founder
 reg sf i.typetech course_mit previous_netw male_founder us_founder
 gen finalist= SolutionStatus=="Finalist"

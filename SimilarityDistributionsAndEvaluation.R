@@ -23,7 +23,7 @@ tema <- theme(
 df <- read_csv("./Data/ColumnPairwiseSimilarity.csv")
 df$StatusSemi <- ifelse(df$Status == "Published", "Filtered", "Kept")
 
-ggplot(df, aes(x = Problem_Solution, fill = StatusSemi, color = StatusSemi)) +
+ggplot(df, aes(x = Dimension_Tech, fill = StatusSemi, color = StatusSemi)) +
   geom_density(aes(y = ..density..), adjust = 1.5, alpha = 0.7) + 
   theme_classic() +
   facet_wrap(~Challenge) +
@@ -35,8 +35,15 @@ ggplot(df, aes(x = Problem_Solution, fill = StatusSemi, color = StatusSemi)) +
 
 df <- read_csv("./Data/SimilarityToPS.csv")
 df$StatusSemi <- ifelse(df$Status == "Published", "Filtered", "Kept")
+df$StatusFin <- ifelse(df$Status == "Finalist", "Finalist", "Not")
 
 ggplot(df, aes(x = Target, fill = StatusSemi, color = StatusSemi)) +
+  geom_density(aes(y = ..density..), adjust = 1.5, alpha = 0.7) + 
+  theme_classic() +
+  facet_wrap(~Challenge) +
+  tema
+
+ggplot(df[df$StatusSemi == "Kept",], aes(x = Target, fill = StatusFin, color = StatusFin)) +
   geom_density(aes(y = ..density..), adjust = 1.5, alpha = 0.7) + 
   theme_classic() +
   facet_wrap(~Challenge) +
@@ -52,9 +59,9 @@ eval <- read_csv("./Data/2023Eval.csv")
 df |>
   left_join(eval, by = "ID") -> df
 
-#df[, colnames(eval)][is.na(df[, colnames(eval)])] <- 0
+df[, colnames(eval)][is.na(df[, colnames(eval)])] <- 0
 
-ggplot(data = df, aes(x = Problem_Solution, y = total, color = StatusSemi)) +
+ggplot(data = df, aes(x = Problem_Target, y = total, color = Status)) +
   geom_point() +
   geom_smooth(method = "lm", colour = "orange", se = FALSE) +
   facet_wrap(~Challenge) + tema
